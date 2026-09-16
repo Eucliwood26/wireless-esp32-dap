@@ -23,7 +23,7 @@ jobs:
         with:
           submodules: recursive
 
-      # Build riêng cho ESP8266 (Đã thêm bước cài pip cho Python 2)
+      # Build riêng cho ESP8266 (Ép buộc cài phiên bản cũ tương thích Python 2.7)
       - name: Build for esp8266
         if: matrix.target-hardware == 'esp8266'
         run: |
@@ -32,9 +32,11 @@ jobs:
             apt-get install -y gcc git wget curl make libncurses-dev flex bison python python-setuptools ninja-build && \
             curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && \
             python get-pip.py && \
+            python -m pip install --upgrade 'pip<21.0' 'setuptools<44.0' && \
+            python -m pip install 'pyelftools<=0.30' 'future==0.18.2' && \
             wget https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz && \
             tar -xzf ./xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz && \
-            python -m pip install --user -r ./ESP8266_RTOS_SDK/requirements.txt && \
+            python -m pip install --user --no-build-isolation -r ./ESP8266_RTOS_SDK/requirements.txt || python -m pip install --user -r ./ESP8266_RTOS_SDK/requirements.txt && \
             export IDF_PATH=/workspace/ESP8266_RTOS_SDK && \
             export PATH=\"\$PATH:/workspace/xtensa-lx106-elf/bin\" && \
             python ./idf.py fullclean && \
