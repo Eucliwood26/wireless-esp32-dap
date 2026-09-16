@@ -23,13 +23,13 @@ jobs:
         with:
           submodules: recursive
 
-      # Build riêng cho ESP8266 (Ép buộc cài phiên bản cũ tương thích Python 2.7)
+      # Build riêng cho ESP8266 (Đã thêm cmake vào danh sách cài đặt)
       - name: Build for esp8266
         if: matrix.target-hardware == 'esp8266'
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ubuntu:20.04 bash -c "
             apt-get update && \
-            apt-get install -y gcc git wget curl make libncurses-dev flex bison python python-setuptools ninja-build && \
+            apt-get install -y gcc git wget curl make cmake libncurses-dev flex bison python python-setuptools ninja-build && \
             curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && \
             python get-pip.py && \
             python -m pip install --upgrade 'pip<21.0' 'setuptools<44.0' && \
