@@ -23,13 +23,15 @@ jobs:
         with:
           submodules: recursive
 
-      # Build riêng cho ESP8266 bằng Docker Ubuntu 20.04 (đã lược bỏ gói apt lỗi)
+      # Build riêng cho ESP8266 (Đã thêm bước cài pip cho Python 2)
       - name: Build for esp8266
         if: matrix.target-hardware == 'esp8266'
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ubuntu:20.04 bash -c "
             apt-get update && \
-            apt-get install -y gcc git wget make libncurses-dev flex bison python python-setuptools ninja-build && \
+            apt-get install -y gcc git wget curl make libncurses-dev flex bison python python-setuptools ninja-build && \
+            curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && \
+            python get-pip.py && \
             wget https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz && \
             tar -xzf ./xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz && \
             python -m pip install --user -r ./ESP8266_RTOS_SDK/requirements.txt && \
