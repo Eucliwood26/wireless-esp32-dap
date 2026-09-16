@@ -44,7 +44,7 @@ jobs:
             python ./idf.py build
           "
 
-      # Build chính hãng cho ESP32 và ESP32-C3 qua Action của Espressif
+      # Build chính hãng cho ESP32 và ESP32-C3 qua Action của Espressif (Đã bật Cache)
       - name: Build for esp32 / esp32c3
         if: matrix.target-hardware != 'esp8266'
         uses: espressif/esp-idf-ci-action@v1
@@ -52,6 +52,8 @@ jobs:
           esp_idf_version: v4.4.2
           target: ${{ matrix.target-hardware }}
           path: './'
+          command: 'idf.py build'
+          cache: true
 
       - name: Merge bin files (esp8266)
         if: matrix.target-hardware == 'esp8266'
