@@ -15,14 +15,13 @@ jobs:
         target-hardware: [esp8266, esp32, esp32c3]
 
     steps:
-   - name: Fix broken git submodule URL
-      run: |
-        git config --global url."https://github.com/eclipse-tinydtls/tinydtls.git".insteadOf "https://git.eclipse.org/r/tinydtls/org.eclipse.tinydtls"
+      - name: Fix broken git submodule URL
+        run: |
+          git config --global url."https://github.com/eclipse-tinydtls/tinydtls.git".insteadOf "https://git.eclipse.org/r/tinydtls/org.eclipse.tinydtls"
 
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
     - name: before_install
       if: matrix.target-hardware == 'esp8266'
       run: |
