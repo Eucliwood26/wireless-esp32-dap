@@ -15,6 +15,7 @@ static struct {
     const char *ssid;
     const char *password;
 } wifi_list[] __attribute__((unused)) = {
+    {.ssid = "xomtro", .password = "Hiep774271"},
     {.ssid = "Necromancer", .password = "DNam88/22"},
     {.ssid = "OTA", .password = "12345678"},
     {.ssid = "DAP", .password = "12345678"},
